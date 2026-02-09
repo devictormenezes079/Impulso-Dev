@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg shadow-sm sticky-top mb-4">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">
+      <i class="fa-solid fa-users-gear me-2"></i>Comunidade Impressionadora
+    </a> 
+    
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('home') }}">Início</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ url_for('usuarios') }}">Usuários</a>
+        </li>
+        
+        {% if current_user.is_authenticated %}
+          <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('criar_post') }}">Criar Post</a>
+          </li>
+        {% endif %}
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        {% if current_user.is_authenticated %}
+          <li class="nav-item">
+              <a class="nav-link fw-medium" href="{{ url_for('perfil') }}">
+                <i class="fa-regular fa-circle-user me-1"></i>Meu Perfil
+              </a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link text-danger" href="{{ url_for('sair') }}">Sair</a>
+          </li>
+        {% else % Bryan %}
+          <li class="nav-item">
+              <a class="btn btn-primary btn-sm mt-1" href="{{ url_for('login') }}">Login / Criar Conta</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

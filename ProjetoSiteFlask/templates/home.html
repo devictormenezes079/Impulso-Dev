@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="fw-bold mb-4">Feed da Comunidade</h1>
+        </div>
+    </div>
+
+    {% for post in posts %}
+    <div class="card mb-4 border-0 shadow-sm overflow-hidden">
+        <div class="card-body p-0">
+            <div class="row g-0">
+                <div class="col-md-3 bg-light d-flex flex-column align-items-center justify-content-center p-4 border-end">
+                    <img src="{{ url_for('static', filename='fotos_perfil/{}'.format(post.autor.foto_perfil)) }}" 
+                         class="rounded-circle shadow-sm border border-3 border-white mb-2" 
+                         width="80" height="80" style="object-fit: cover;">
+                    <span class="fw-bold text-dark">{{ post.autor.username }}</span>
+                </div>
+
+                <div class="col-md-9 p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <h3 class="card-title fw-bold text-primary">{{ post.titulo }}</h3>
+                        <p class="card-text text-secondary">{{ post.corpo }}</p>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top">
+                        <small class="text-muted">
+                            <i class="fa-regular fa-clock me-1"></i>
+                            Postado em: {{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}
+                        </small>
+                        
+                        {% if current_user == post.autor %}
+                            <form action="{{ url_for('excluir_post', post_id=post.id) }}" method="POST">
+                                <button type="submit" class="btn btn-outline-danger btn-sm border-0" onclick="return confirm('Excluir esta publicação?')">
+                                    <i class="fa-solid fa-trash-can"></i> Excluir
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

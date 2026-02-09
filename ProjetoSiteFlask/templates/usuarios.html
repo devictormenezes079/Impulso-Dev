@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <h1 class="mt-4">Olá, {{ current_user.username }}</h1>
+    <h2 class="text-secondary">Explorar Usuários</h2>
+    <hr>
+    
+    {# INÍCIO DO LOOP: Para cada 'usuario' (objeto do banco) dentro da 'lista_usuarios' #}
+    {% for usuario in lista_usuarios %}
+        <div class="container mt-5 d-flex justify-content-center">
+            <div class="card p-3 shadow-sm">
+                <div class="d-flex align-items-center">
+                    
+                    {# 1. FOTO DE PERFIL: Buscamos a foto específica de cada usuário do loop #}
+                    <div class="image pe-2"> 
+                        <img src="{{ url_for('static', filename='fotos_perfil/{}'.format(usuario.foto_perfil)) }}" class="rounded" width="200"> 
+                    </div>  
+                    
+                    <div class="ml-3 w-100">
+                        {# 2. IDENTIFICAÇÃO: Nome e e-mail dinâmicos #}
+                        <h4 class="mb-0 mt-0">{{ usuario.username }}</h4> 
+                        <span class="text-muted">{{ usuario.email }}</span>
+                        
+                        {# 3. BARRA DE STATUS: Centraliza as métricas do perfil #}
+                        <div class="p-2 mt-2 bg-primary d-flex justify-content-between rounded text-white stats">
+                            
+                            {# BLOCO DE CURSOS #}
+                            <div class="d-flex flex-column"> 
+                                <span class="articles">Cursos</span> 
+                                <span class="number1">
+                                    {# Lógica: Se não houver cursos, mostra 0. Se houver, conta os ';' e soma 1 #}
+                                    {% if 'Não Informado' in usuario.cursos or not usuario.cursos %}
+                                        0
+                                    {% else %}
+                                        {{ usuario.cursos.count(';') + 1 }}
+                                    {% endif %}
+                                </span> 
+                            </div>
+
+                            {# BLOCO DE POSTS #}
+                            <div class="d-flex flex-column"> 
+                                <span class="rating">Posts</span> 
+                                {# Usamos o relacionamento 'posts' definido no models.py para contar os registros #}
+                                <span class="number3">{{ usuario.posts|length }}</span> 
+                            </div>
+                        </div>
+                        
+                        {# 4. BOTÃO VISUAL (OPCIONAL): Como é a lista geral, aqui poderíamos ter um "Ver Posts" no futuro #}
+                        <div class="mt-2 text-end">
+                            <small class="text-secondary">Membro desde: {{ usuario.id }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {# FIM DO LOOP #}
+    
+</div>
+{% endblock %}
